@@ -1,0 +1,227 @@
+*{
+    margin: 0;
+    font-family: "Helvetica Neue",Arial,sans-serif; font-size: 16px; font-weight: 300;
+    overflow: hidden;  
+}
+
+.container{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(50, 53, 61);
+    display: grid;
+    grid-template-columns: auto 250px;
+    color: white;
+    -webkit-transition: 1s;
+    transition: width 1s;
+}
+
+.content{
+    display: grid;
+    grid-template-columns: 100%;
+}
+
+.right{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 20px auto;   
+}
+
+#rightButton{
+    /* background-color: transparent; */
+    height: 100%;
+    border: none;
+}
+
+#rightButton:hover{
+    background-color: black;
+}
+
+/* console pannel */
+#consoleLog{
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 200px;
+}
+
+#consoleLog textarea{
+    color: white;
+    background-color: rgb(29, 29, 29);
+    margin: auto;
+    height: 50%;
+    width: 90%;
+    padding: 20px;
+}
+
+#consoleLog > div{
+    display: grid;
+    grid-template-columns: 100%;
+}
+
+#consoleLog > div > div{
+    cursor: pointer;
+    color: black;
+    width: 60%;
+    padding: 10px;
+    margin-top: auto;
+    margin-bottom: auto;    
+    margin: auto;
+    background-color: orange;
+}
+
+/* consoleLogButton */
+#consoleLogButton{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20px;
+    background-color: transparent;
+}
+
+#consoleLogButton:hover{
+    background-color: black;
+}
+
+
+
+
+
+.left > div, .right > div {
+    margin: auto;
+    width: 90%;
+    display: block;
+    border: 1px solid white;
+}
+
+/* table section */
+.middle{
+    grid-template-rows: 15% auto 200px;
+    height: 100%;
+    -webkit-transition: 1s;
+    transition: height 1s;
+}
+
+.middle > table > tr{
+/*    display: grid;
+    grid-template-columns: 10% 45% 45%;    */
+}
+
+#rightPanelButton{
+    height: 100vh;
+    width: 15px;
+    position: absolute;
+    right: 0px;
+    top:0px;
+}
+
+#rightPanelButton:hover{
+    background-color: black;
+}
+
+/*search bar*/
+#searchBar {
+    background-color: transparent;
+    margin: auto;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    box-shadow: 3px 3px 7px black;
+}
+
+#searchBar input[type=text] {
+    outline: none;
+    padding-left: 15px;
+    padding-right: 0px;
+    width: 300px;
+    border: 1px solid black;
+    border-right: none;
+}
+
+#clearSearching {
+    color: black;
+    background-color: white;
+    width: 30px;
+    border: 1px solid black;
+    border-left: none;
+    line-height: 30px;
+    text-align: center;
+}
+
+table {
+    border-bottom: 1px orange solid;
+    border-collapse: collapse;
+    /*height: 500px;*/
+    /*width: 90%;*/
+    /*border: 2px solid red;*/
+}
+
+table thead {
+    background-color: orange;
+}
+
+table th+th {
+    border-left: 0.5px black solid;
+}
+
+table td+td {
+    border-left: 0.5px rgb(125, 125, 125) solid;
+}
+
+table tr+tr {
+    border-top: 0.5px rgb(125, 125, 125) solid;
+}
+
+/*thead, tbody { display: block; }
+
+tbody {
+    height: 400px;        Just for the demo          
+    overflow-y: auto;     Trigger vertical scroll    
+    overflow-x: hidden;   Hide the horizontal scroll 
+}*/
+
+
+
+form[action="insert"]{
+    display: grid;
+    grid-template-columns: 100%;
+    padding: 10px;
+}
+
+form[action="insert"] input[type="submit"]{
+    background-color: orange;
+    outline:none;
+    border: none;
+}
+
+#customMenu {
+    color: orange;
+    width: 150px;
+    background-color: rgb(32, 32, 32);
+    position: absolute;
+    box-shadow: 2px 2px 3px black;
+    display: grid;
+    grid-template-columns: 100%;
+    z-index: -1;
+    top: 0px;
+    left: 0px;
+}
+
+#customMenu > a{
+    text-align: center;   
+    font-size: 80%;
+    width: 100%;
+    line-height: 35px;
+}
+
+#customMenu a+a{
+    border-top: 1px solid rgb(0, 0, 0);
+}
+
+#customMenu > a:hover{
+    background-color: rgb(49, 49, 49);
+    cursor: pointer;
+}
