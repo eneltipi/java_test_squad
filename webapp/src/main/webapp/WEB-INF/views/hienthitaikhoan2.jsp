@@ -49,23 +49,21 @@
 				<tbody>
 					<c:forEach var="a" items="${accs}">
 						<tr>
-							<td></td>
+							<%-- <td></td>
 							<td>${a.getUsername()}</td>
 							<td>${a.getPassword()}</td>
 							<td>${a.getFullname()}</td>
-							<td>${a.getAddress()}</td>
-							<td>${a.getPhonenumber()}</td>
-							<td>${a.getRole()?"Admin":"Employee"}</td>
-							<td>${a.getDateCreated()}</td>
-							
-				<%-- 			<td></td>
-							<td>${a.getEmail()}</td>
-							<td>${a.getPassword()}</td>
-							<td>${a.getFullname()}</td>
-							<td>${a.getAddress()}</td>
 							<td>${a.getPhonenumber()}</td>
 							<td>${a.getRole()?"Admin":"Employee"}</td>
 							<td>${a.getDateCreated()}</td> --%>
+							
+							<td></td>
+							<td>${a.getEmail()}</td>
+							<td>${a.getPassword()}</td>
+							<td>${a.getFullname()}</td>
+							<td>${a.getPhonenumber()}</td>
+							<td>${a.getRole()?"Admin":"Employee"}</td>
+							<td>${a.getDateCreated()}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -86,16 +84,16 @@
 			<div id="rightButton"></div>
 			<div>
 				<form action="insert" method="post" id="lol">
-					<input type="text" name="username" placeholder="Username" /> <input
+					<input type="text" name="email" placeholder="Username" /> <input
 						type="text" name="password" placeholder="Password" /> <input
 						type="text" name="fullname" placeholder="Full name" /> <input
-						type="text" name="address" placeholder="Address" /> <input
-						type="text" name="phonenumber" placeholder="Phone number" /> <input
-						type="hidden" name="role" id="roleInput" /> <select
-						id="roleSelection">
-						<option>Empolyee</option>
-						<option>Admin</option>
-					</select> <input type="submit" value="Insert" />
+						type="text" name="phonenumber" placeholder="Phone number" /> 
+                        <input type="hidden" name="role" id="roleInput" value="staff"/> 
+                        <select id="roleSelection">
+                            <option>Empolyee</option>
+                            <option>Admin</option>
+			    		</select> 
+                        <input type="submit" value="Insert" />
 				</form>
 			</div>
 		</div>
@@ -137,14 +135,14 @@ table input {
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
             credentials: 'same-origin', // include, *same-origin, omit   
             headers: {
-                // 'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
                 // 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': "Bearer "+ getCookie('jwt')      
                 },
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            // body: JSON.stringify(data) // body data type must match "Content-Type" header
-            body: data
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+            // body: data
         });
         return response.json(); // parses JSON response into native JavaScript objects
     }
@@ -208,10 +206,10 @@ table input {
                                     let selectedRowIndex = selectedRow.rowIndex;
                                     let selectedCellIndex = selectedCell.cellIndex;
 
-                                    let username = array[selectedRowIndex - 1].username;
+                                    let email = array[selectedRowIndex - 1].email;
 
                                     let content = {
-                                        username: username,
+                                        email: email,
                                         columnName: columnName[selectedCellIndex - 1],
                                         newValue: newValue
                                     };
@@ -229,14 +227,13 @@ table input {
                                     //     }
                                     // });
                                         
-                                        console.log(username,content.columnName, newValue)
-
+            
                                     postData('/webapp/updateCellValue', content)
                                     .then(response => {
                                         console.log("dsds"+response); // JSON data parsed by `data.json()` call
-                                        // array = response;
-                                        //     selectedCell.innerHTML = "";
-                                        //     selectedCell.innerText = newValue;
+                                        array = response;
+                                        selectedCell.innerHTML = "";
+                                        selectedCell.innerText = newValue;
                                     });
        
 
@@ -258,31 +255,38 @@ table input {
                 let roleInput = document.getElementById("roleInput");
                 roleInput.value = false;
                 if (selectedValue == "Admin") {
-                    roleInput.value = true;
+                    roleInput.value = "staff,admin";
                 }
             });
 
             // Menu option handler
             customMenu.addEventListener('click', e => {
-            	console.log("lolll")
-                let option = e.target.innerText;
+            	let option = e.target.innerText;
                 if (option == "Delete") {
-                    let username = selectedRow.children[1].innerHTML;
-                    console.log(username);
-
-                    $.ajax({
-                        method: "post",
-                        data: {username: username},
-                        url: "/webapp/deleteAccount",
-                        async: false,	
-                        dataType: "json",
-                        success: function (response) {
-                            if (response == 1) {
-                                selectedRow.remove();
-                                alert("Account successfully deleted");
-                            } else {
-                                alert("Failed to delete account");
-                            }
+                    let email = selectedRow.children[1].innerHTML;
+                   
+                    // $.ajax({
+                    //     method: "post",
+                    //     data: {username: username},
+                    //     url: "/webapp/deleteAccount",
+                    //     async: false,	
+                    //     dataType: "json",
+                    //     success: function (response) {
+                    //         if (response == 1) {
+                    //             selectedRow.remove();
+                    //             alert("Account successfully deleted");
+                    //         } else {
+                    //             alert("Failed to delete account");
+                    //         }
+                    //     }
+                    // });
+                    postData('/webapp/deleteAccount', {email:email})
+                    .then(response => {
+                        if (response == 1) {
+                            selectedRow.remove();
+                            alert("Account successfully deleted");
+                        } else {
+                            alert("Failed to delete account");
                         }
                     });
                 }

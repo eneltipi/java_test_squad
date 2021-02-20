@@ -14,6 +14,7 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -59,6 +60,7 @@ public class FrontController {
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
 	public RedirectView insert(ModelMap model, Account user, RedirectAttributes redirectAttributes) {
 		try {
+			System.out.println("-------------"+user.getRole());
 			String result = dao.insert(user);
 			if (result.equalsIgnoreCase("success")) {
 				redirectAttributes.addFlashAttribute("notice", "Insert successful");
@@ -73,25 +75,24 @@ public class FrontController {
 
 //    consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
 	@RequestMapping(value = "/updateCellValue", method = RequestMethod.POST)
-	public @ResponseBody String Fetch(Account acc) {
+	public @ResponseBody String Fetch(@RequestBody Account acc) {
 		String json = null;
-		System.out.println("Dasdsadsadasds"+acc.getUsername());
 		try {
-			dao.cellUpdate(acc.getUsername(), acc.getColumnName(), acc.getNewValue());
+			dao.cellUpdate(acc.getEmail(), acc.getColumnName(), acc.getNewValue());
 			json = new Gson().toJson(dao.getAll());
 		} catch (Exception e) {
-			System.out.println("Lá»—i á»Ÿ update: " + e);
+			System.out.println("Lỗi update cell : " + e);
 		}
 		return json;
 	}
 
 	@RequestMapping(value = "/deleteAccount", method = RequestMethod.POST)
-	public @ResponseBody String DeleteAccount(Account acc) {
+	public @ResponseBody String DeleteAccount(@RequestBody Account acc) {
 		int result = 0;
 		try {
-			result = dao.removeUser(acc.getUsername());
+			result = dao.removeUser(acc.getEmail());
 		} catch (Exception e) {
-			System.out.println("Lá»—i á»Ÿ delete: " + e);
+			System.out.println("Lỗi delete cell: " + e);
 		}
 		return new Gson().toJson(result);
 	}

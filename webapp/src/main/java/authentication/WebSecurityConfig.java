@@ -64,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/getLaptopList").permitAll()
 		.antMatchers("/upimg").hasAuthority("admin")
 		.antMatchers("/angularLogin").permitAll()
+		.antMatchers("/insert").permitAll()
 		.anyRequest().authenticated();
      
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -75,12 +75,8 @@ public class AccountDAO {
      */
     public String insert(Account account) {
         try {
-        	if(account.getRole() == null) {
-        		account.setRole(false);            	
-        	}        	
-        	
-            String sql = "insert into account (username, password, fullname, address, phonenumber, role) values (?,?,?,?,?,?)";
-            jdbc.update(sql, account.getUsername(), account.getPassword(), account.getFullname(), account.getAddress(), account.getPhonenumber(), account.getRole()); 
+            String sql = "insert into account (email, password, fullname, phonenumber, roles) values (?,?,?,?,?)";
+            jdbc.update(sql, account.getEmail(), account.getPassword(), account.getFullname(), account.getPhonenumber(), account.getRole()); 
             return "success";
         } catch (DataAccessException e) {         
             String[] MySQLexception = e.getCause().toString().split(":");
@@ -98,8 +94,8 @@ public class AccountDAO {
         jdbc.update(sql, acc.getPassword(), acc.getUsername());
     }
 
-    public void cellUpdate(String username, String columnName, String newValue) {
-        String sql = "UPDATE Account SET " + columnName + "='" + newValue + "' WHERE username='" + username + "'";
+    public void cellUpdate(String email, String columnName, String newValue) {
+        String sql = "UPDATE Account SET " + columnName + "='" + newValue + "' WHERE email='" + email + "'";
         System.out.println(sql);
         jdbc.update(sql);
     }
@@ -109,9 +105,10 @@ public class AccountDAO {
      *
      * @param username mÃ£ thá»±c thá»ƒ cáº§n xÃ³a
      */
-    public int removeUser(String username) {
-        String sql = "DELETE FROM Account WHERE username=?";
-        return jdbc.update(sql, username);
+    public int removeUser(String email) {
+        String sql = "DELETE FROM Account WHERE email=?";
+        System.out.println(sql);
+        return jdbc.update(sql, email);
     }
 
     ///////////////////////////////

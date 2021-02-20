@@ -2,11 +2,20 @@ package model;
 
 public class Account{
     String username;
+    String email;
     String password;
     String fullname;
     String address;
     String phonenumber;
-    Boolean role;
+    public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	String role;
     String dateCreated;
     
     //for Ajax cell update
@@ -29,7 +38,7 @@ public class Account{
         this.phonenumber = phonenumber;
     }
 
-    public void setRole(Boolean role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
@@ -49,7 +58,7 @@ public class Account{
         return phonenumber;
     }
 
-    public Boolean getRole() {
+    public String getRole() {
         return role;
     }
 
@@ -57,8 +66,9 @@ public class Account{
         return dateCreated;
     }
 
-    public Account(String username, String password, String fullname, String address, String phonenumber, Boolean role, String dateCreated, String columnName, String newValue) {
+    public Account(String username, String email, String password, String fullname, String address, String phonenumber, String role, String dateCreated, String columnName, String newValue) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.fullname = fullname;
         this.address = address;
