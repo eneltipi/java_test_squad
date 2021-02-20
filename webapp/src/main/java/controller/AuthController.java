@@ -28,6 +28,7 @@ import authentication.helper.CustomUserDetails;
 import authentication.helper.User;
 import authentication.jwt.JwtResponse;
 import authentication.jwt.JwtUtils;
+import model.Account;
 import model.Laptop;
 
 //@CrossOrigin(origins = "http://localhost:4200")
@@ -42,36 +43,27 @@ public class AuthController {
 	
 	@Autowired
 	protected JdbcTemplate jdbc;
-	
-	@RequestMapping("JWTLogin")
-	public ResponseEntity<?> authenticateUser(HttpServletResponse response) {		
-		User user = new User();
-		user.setEmail("anh@gmail.com");
-		user.setPassword("123");
-		
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-		
-		SecurityContextHolder.getContext().setAuthentication(authentication);		
-		String jwt = jwtUtils.generateJwtToken(authentication);
-		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
-		
-		Cookie cookie = new Cookie("jwt", jwt);
-//		cookie.setHttpOnly(true);
-		cookie.setMaxAge(3600);
-		response.addCookie(cookie);
-		
-		Cookie cookie2 = new Cookie("jwt2", jwt);
-//		cookie.setHttpOnly(true);
-		cookie.setMaxAge(3600);
-		response.addCookie(cookie2);
-
-		return ResponseEntity.ok(new JwtResponse(userDetails.getEmail(), jwt, roles));
-	}
+//	
+//	@RequestMapping("JWTLogin")
+//	public ResponseEntity<?> authenticateUser(Account user, HttpServletResponse response) {		
+//		Authentication authentication = authenticationManager.authenticate(
+//				new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+//		
+//		SecurityContextHolder.getContext().setAuthentication(authentication);		
+//		String jwt = jwtUtils.generateJwtToken(authentication);
+//		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//		
+//		List<String> roles = userDetails.getAuthorities().stream()
+//				.map(item -> item.getAuthority())
+//				.collect(Collectors.toList());
+//		
+//		Cookie cookie = new Cookie("jwt", jwt);
+////		cookie.setHttpOnly(true);
+//		cookie.setMaxAge(1800);
+//		response.addCookie(cookie);
+//		
+//		return ResponseEntity.ok(new JwtResponse(userDetails.getEmail(), jwt, roles));
+//	}
 	
 	
 	

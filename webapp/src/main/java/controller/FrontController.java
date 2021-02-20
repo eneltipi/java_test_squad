@@ -6,11 +6,19 @@ import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +31,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
 
+import authentication.helper.CustomUserDetails;
+import authentication.jwt.JwtResponse;
+import authentication.jwt.JwtUtils;
 import dao.AccountDAO;
 import model.Account;
 
@@ -44,7 +55,35 @@ public class FrontController {
 
 	@Autowired
 	protected JdbcTemplate jdbc;
+	
+	@Autowired
+	AuthenticationManager authenticationManager;	
 
+	@Autowired
+	JwtUtils jwtUtils;
+
+	@RequestMapping("JWTLogin")
+	public RedirectView authenticateUser(Account user, HttpServletResponse response) {		
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+		
+		SecurityContextHolder.getContext().setAuthentication(authentication);		
+		String jwt = jwtUtils.generateJwtToken(authentication);
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		
+		List<String> roles = userDetails.getAuthorities().stream()
+				.map(item -> item.getAuthority())
+				.collect(Collectors.toList());
+		
+		Cookie cookie = new Cookie("jwt", jwt);
+//		cookie.setHttpOnly(true);
+		cookie.setMaxAge(1800);
+		response.addCookie(cookie);
+		
+//		return ResponseEntity.ok(new JwtResponse(userDetails.getEmail(), jwt, roles));
+		return new RedirectView("hienthitaikhoan2");
+	}
+	
 	@RequestMapping(value = "hienthitaikhoan2")
 	public String showAccount(ModelMap model) {
 		String notice = (String) model.get("notice");// get attribute from redirect
@@ -58,19 +97,23 @@ public class FrontController {
 	}
 
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
-	public RedirectView insert(ModelMap model, Account user, RedirectAttributes redirectAttributes) {
+	public @ResponseBody String insert(ModelMap model, Account user, RedirectAttributes redirectAttributes) {
+		String response = null;
+		
 		try {
-			System.out.println("-------------"+user.getRole());
 			String result = dao.insert(user);
 			if (result.equalsIgnoreCase("success")) {
-				redirectAttributes.addFlashAttribute("notice", "Insert successful");
+//				redirectAttributes.addFlashAttribute("notice", "Insert successful");
+				response = "ok";
 			} else {
-				redirectAttributes.addFlashAttribute("notice", result);
+				response = "taken";
+//				redirectAttributes.addFlashAttribute("notice", result);
 			}
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute("notice", "Insert fail");
+			response = "fail";
+//			redirectAttributes.addFlashAttribute("notice", "Insert fail");
 		}
-		return new RedirectView("hienthitaikhoan2");
+		return response;
 	}
 
 //    consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
