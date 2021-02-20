@@ -57,6 +57,15 @@
 							<td>${a.getPhonenumber()}</td>
 							<td>${a.getRole()?"Admin":"Employee"}</td>
 							<td>${a.getDateCreated()}</td>
+							
+				<%-- 			<td></td>
+							<td>${a.getEmail()}</td>
+							<td>${a.getPassword()}</td>
+							<td>${a.getFullname()}</td>
+							<td>${a.getAddress()}</td>
+							<td>${a.getPhonenumber()}</td>
+							<td>${a.getRole()?"Admin":"Employee"}</td>
+							<td>${a.getDateCreated()}</td> --%>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -110,6 +119,36 @@ table input {
 </style>
 
 	<script>
+    function getCookie(name) {
+ 		var cookieArr = document.cookie.split(";");
+	    for(var i = 0; i < cookieArr.length; i++) {
+	        var cookiePair = cookieArr[i].split("=");    
+	        if(name == cookiePair[0].trim()) {
+	            return decodeURIComponent(cookiePair[1]);
+	        }
+	    } 
+    	return null;
+	}
+
+    async function postData(url = '', data = {}) {
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit   
+            headers: {
+                // 'Content-Type': 'application/json',
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': "Bearer "+ getCookie('jwt')      
+                },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            // body: JSON.stringify(data) // body data type must match "Content-Type" header
+            body: data
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+    }
+
             const table = document.querySelector('tbody');
             const customMenu = document.querySelector("#customMenu");
 
@@ -177,18 +216,30 @@ table input {
                                         newValue: newValue
                                     };
 
-                                    $.ajax({
-                                        method: "post",
-                                        data : content,
-                                        url: "/webapp/updateCellValue",
-                                        async: false,
-                                        dataType: "json",
-                                        success: function (response) {
-                                            array = response;
-                                            selectedCell.innerHTML = "";
-                                            selectedCell.innerText = newValue;
-                                        }
+                                    // $.ajax({
+                                    //     method: "post",
+                                    //     data : content,
+                                    //     url: "/webapp/updateCellValue",
+                                    //     async: false,
+                                    //     dataType: "json",
+                                    //     success: function (response) {
+                                    //         array = response;
+                                    //         selectedCell.innerHTML = "";
+                                    //         selectedCell.innerText = newValue;
+                                    //     }
+                                    // });
+                                        
+                                        console.log(username,content.columnName, newValue)
+
+                                    postData('/webapp/updateCellValue', content)
+                                    .then(response => {
+                                        console.log("dsds"+response); // JSON data parsed by `data.json()` call
+                                        // array = response;
+                                        //     selectedCell.innerHTML = "";
+                                        //     selectedCell.innerText = newValue;
                                     });
+       
+
                                 } else {
                                     selectedCell.innerHTML = "";
                                     selectedCell.innerText = oldValue;

@@ -75,6 +75,7 @@ public class FrontController {
 	@RequestMapping(value = "/updateCellValue", method = RequestMethod.POST)
 	public @ResponseBody String Fetch(Account acc) {
 		String json = null;
+		System.out.println("Dasdsadsadasds"+acc.getUsername());
 		try {
 			dao.cellUpdate(acc.getUsername(), acc.getColumnName(), acc.getNewValue());
 			json = new Gson().toJson(dao.getAll());

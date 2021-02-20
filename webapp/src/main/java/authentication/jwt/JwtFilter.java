@@ -32,6 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		try {
 			String jwt = parseJwt(request);
+			System.out.println("is jwt get cookie:"+jwt);
 
 			if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
 				String username = jwtUtils.getUserNameFromJwtToken(jwt);

@@ -8,7 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CookieValue;
 
 import authentication.helper.CustomUserDetails;
 import authentication.helper.User;
@@ -38,9 +43,8 @@ public class AuthController {
 	@Autowired
 	protected JdbcTemplate jdbc;
 	
-	@RequestMapping("angularLogin")
-	public ResponseEntity<?> authenticateUser() {
-		
+	@RequestMapping("JWTLogin")
+	public ResponseEntity<?> authenticateUser(HttpServletResponse response) {		
 		User user = new User();
 		user.setEmail("anh@gmail.com");
 		user.setPassword("123");
@@ -56,6 +60,16 @@ public class AuthController {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 		
+		Cookie cookie = new Cookie("jwt", jwt);
+//		cookie.setHttpOnly(true);
+		cookie.setMaxAge(3600);
+		response.addCookie(cookie);
+		
+		Cookie cookie2 = new Cookie("jwt2", jwt);
+//		cookie.setHttpOnly(true);
+		cookie.setMaxAge(3600);
+		response.addCookie(cookie2);
+
 		return ResponseEntity.ok(new JwtResponse(userDetails.getEmail(), jwt, roles));
 	}
 	
@@ -63,9 +77,8 @@ public class AuthController {
 	
 //	@CrossOrigin(origins = "http://localhost:3000/")	
 	@RequestMapping(value = "/getLaptopList")
-	public List<Laptop> getLaptopList() {
+	public List<Laptop> getLaptopList(@CookieValue(value = "jwt") String jwt) {		
 		List<Laptop> laptopList = new ArrayList<Laptop>();
-			
 		try {
 			Connection connection = jdbc.getDataSource().getConnection();
 			PreparedStatement pstmt = connection.prepareStatement("Call  getLaptopList();");
@@ -94,6 +107,7 @@ public class AuthController {
 		}
 
 		return laptopList;
+//		return "hienthitaikhoan2";
 	}
 
 }

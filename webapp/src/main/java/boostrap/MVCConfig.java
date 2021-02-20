@@ -57,13 +57,14 @@ public class MVCConfig implements WebMvcConfigurer {
 		registry.addResourceHandler("/**").addResourceLocations("/");
 	}
 
+	
 	@Bean
 	public DriverManagerDataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setUrl("jdbc:mysql://localhost:3306/spring_web");		
+		dataSource.setUrl("jdbc:mysql://localhost:3306/spring");		
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUsername("root");
-		dataSource.setPassword("123456");
+		dataSource.setUsername("test");
+		dataSource.setPassword("root");
 		return dataSource;
 	}
 
