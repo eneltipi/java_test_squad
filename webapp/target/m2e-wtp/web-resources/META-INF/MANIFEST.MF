@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: iOllio
 Build-Jdk: 13.0.2
+=======
+Built-By: MKV
+Build-Jdk: 15.0.1
+>>>>>>> 064b43e0fe1e57e7a6e02282eeac615a80172bbe
 Created-By: Maven Integration for Eclipse
 

@@ -44,7 +44,7 @@ public class FrontController {
 	public String welcomePage() {
 		return "dangnhap2";
 	}
-	
+
 	@GetMapping(value = "/upimg")
 	public String welcomePage2() {
 		return "upimg";
@@ -55,14 +55,15 @@ public class FrontController {
 
 	@Autowired
 	protected JdbcTemplate jdbc;
-	
+
 	@Autowired
-	AuthenticationManager authenticationManager;	
+	AuthenticationManager authenticationManager;
 
 	@Autowired
 	JwtUtils jwtUtils;
 
 	@RequestMapping("JWTLogin")
+<<<<<<< HEAD
 	public RedirectView authenticateUser(Account user, HttpServletResponse response, RedirectAttributes redirectAttributes) {		
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
@@ -70,30 +71,48 @@ public class FrontController {
 		System.out.println("dsadasdasd" + authentication);
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);		
+=======
+	public RedirectView authenticateUser(Account user, HttpServletResponse response) {
+		Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+>>>>>>> 064b43e0fe1e57e7a6e02282eeac615a80172bbe
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
+
+		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
+<<<<<<< HEAD
 		
 		System.out.println("user role"+userDetails.getEmail());
+=======
+
+>>>>>>> 064b43e0fe1e57e7a6e02282eeac615a80172bbe
 		Cookie cookie = new Cookie("jwt", jwt);
 //		cookie.setHttpOnly(true);
 		cookie.setMaxAge(1800);
 		response.addCookie(cookie);
-		
+
 //		return ResponseEntity.ok(new JwtResponse(userDetails.getEmail(), jwt, roles));
+<<<<<<< HEAD
 		redirectAttributes.addFlashAttribute("userRole", roles);
 		redirectAttributes.addFlashAttribute("userEmail", userDetails.getEmail());
 		
 		return new RedirectView("hienthitaikhoan2");
+=======
+		return new RedirectView("fffffffff");
+>>>>>>> 064b43e0fe1e57e7a6e02282eeac615a80172bbe
 	}
-	
+
 	@RequestMapping(value = "hienthitaikhoan2")
+<<<<<<< HEAD
 	public String showAccount(ModelMap model) {
 
 		System.out.println(SecurityContextHolder.getContext().getAuthentication());		
+=======
+	public String showAccount(ModelMap model) { 
+>>>>>>> 064b43e0fe1e57e7a6e02282eeac615a80172bbe
 		String notice = (String) model.get("notice");// get attribute from redirect
 
 		List<Account> accountList = dao.getAll();
@@ -113,7 +132,7 @@ public class FrontController {
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
 	public @ResponseBody String insert(ModelMap model, Account user, RedirectAttributes redirectAttributes) {
 		String response = null;
-		
+
 		try {
 			String result = dao.insert(user);
 			if (result.equalsIgnoreCase("success")) {
