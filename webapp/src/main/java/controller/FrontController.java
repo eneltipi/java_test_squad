@@ -80,7 +80,7 @@ public class FrontController {
 		response.addCookie(cookie);
 
 //		return ResponseEntity.ok(new JwtResponse(userDetails.getEmail(), jwt, roles));
-		return new RedirectView("concac");
+		return new RedirectView("hienthitaikhoan2");
 	}
 
 	@RequestMapping(value = "hienthitaikhoan2")
