@@ -119,4 +119,28 @@ public class AccountDAO {
         String sql = "SELECT * FROM Account WHERE username LIKE ?";
         return jdbc.query(sql, getRowMapper(), "%" + username + "%");
     }
+    
+    public Account findAccount(String email) {
+    	Account account = new Account();
+	    	account.setEmail("anh@gmail.com");
+	    	account.setPassword("123");
+	    	
+	    	return account;
+    	};
+    
+    	
+    	public boolean checkLogin(String email, String passwrod) {
+    		
+    		Account user = findAccount(email);
+    		
+    		if (user.getEmail().equals(email)) {
+    			if (user.getPassword().equals(passwrod)) {
+    				return true;
+    			} else {
+    				return false;
+    			}
+    		} else {
+    			return false;
+    		}
+    	}
 }
