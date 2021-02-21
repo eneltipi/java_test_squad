@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		System.out.println("this is jwt filter");
+		// System.out.println("this is jwt filter");
 
 		try {
 			String jwt = parseJwt(request);

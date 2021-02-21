@@ -13,10 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class AccountDAO {
     
-	public AccountDAO() {
-		
-		System.out.println("dsadsad");
-	}
+	public AccountDAO() {}
     /**
      * Inject tá»« <bean class="...JdbcTemplate>
      */

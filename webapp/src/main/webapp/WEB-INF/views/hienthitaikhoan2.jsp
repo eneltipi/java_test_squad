@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-        <html lang="en">
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<html lang="en">
 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta http-equiv="X-UA-Compatible" content="ie=edge">
-            <link rel="stylesheet" href="css/showAccount.css">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script defer src="js/showAccount.js"></script>
-            <script src="js/aaa.js"></script>
-            <title>Document</title>
-        </head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link rel="stylesheet" href="css/showAccount.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script defer src="js/showAccount.js"></script>
+<script src="js/aaa.js"></script>
+<title>Document</title>
+</head>
 
-        <body>
-            <script>
+<body>
+	<script>
                 var notice = ${ notice }; //Insert notice from the controller
 
                 // Check if any notice from the controller and alert it
@@ -28,27 +29,27 @@
                 const columnName = ${ columnNameJSON };// ColumnNameList
             </script>
 
-            <div class="container">
-                <div class="middle content">
-                    <form id="searchBar" action="search" method="post">
-                        <input type="text" id="searchInput" />
-                        <div id='clearSearching'></div>
-                        <input type="submit" value="find" />
-                    </form>
+	<div class="container">
+		<div class="middle content">
+			<form id="searchBar" action="search" method="post">
+				<input type="text" id="searchInput" />
+				<div id='clearSearching'></div>
+				<input type="submit" value="find" />
+			</form>
 
-                    <table cellpadding="10">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <c:forEach var="column" items="${columnNameJAVA}">
-                                    <th>${column}</th>
-                                </c:forEach>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="a" items="${accs}">
-                                <tr>
-                                    <%-- <td>
+			<table cellpadding="10">
+				<thead>
+					<tr>
+						<th></th>
+						<c:forEach var="column" items="${columnNameJAVA}">
+							<th>${column}</th>
+						</c:forEach>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="a" items="${accs}">
+						<tr>
+							<%-- <td>
                                         </td>
                                         <td>${a.getUsername()}</td>
                                         <td>${a.getPassword()}</td>
@@ -57,65 +58,65 @@
                                         <td>${a.getRole()?"Admin":"Employee"}</td>
                                         <td>${a.getDateCreated()}</td> --%>
 
-                                        <td></td>
-                                        <td>${a.getEmail()}</td>
-                                        <td>${a.getPassword()}</td>
-                                        <td>${a.getFullname()}</td>
-                                        <td>${a.getPhonenumber()}</td>
-                                        <td>${a.getRole()?"Admin":"Employee"}</td>
-                                        <td>${a.getDateCreated()}</td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
+							<td></td>
+							<td>${a.getEmail()}</td>
+							<td>${a.getPassword()}</td>
+							<td>${a.getFullname()}</td>
+							<td>${a.getPhonenumber()}</td>
+							<td>${a.getRole()?"Admin":"Employee"}</td>
+							<td>${a.getDateCreated()}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
 
-                    <div id="consoleLog">
-                        <div id="consoleLogButton"></div>
-                        <textarea id="actionLog"></textarea>
-                        <div>
-                            <div>Previous</div>
-                            <div>Next</div>
-                        </div>
-                    </div>
+			<div id="consoleLog">
+				<div id="consoleLogButton"></div>
+				<textarea id="actionLog"></textarea>
+				<div>
+					<div>Previous</div>
+					<div>Next</div>
+				</div>
+			</div>
 
-                </div>
+		</div>
 
-                <div class="right content">
-                    <div id="rightButton"></div>
-                    <div>
-                        <form action="insert" method="post" id="lol">
-                            <input type="text" name="email" placeholder="Username" /> <input type="text" name="password"
-                                placeholder="Password" /> <input type="text" name="fullname" placeholder="Full name" />
-                            <input type="text" name="phonenumber" placeholder="Phone number" />
-                            <input type="hidden" name="role" id="roleInput" value="staff" />
-                            <select id="roleSelection">
-                                <option>Empolyee</option>
-                                <option>Admin</option>
-                            </select>
-                            <input type="submit" value="Insert" />
-                        </form>
-                    </div>
-                </div>
+		<div class="right content">
+			<div id="rightButton"></div>
+			<div>
+				<form action="insert" method="post" id="lol">
+					<input type="text" name="email" placeholder="Username" /> <input
+						type="text" name="password" placeholder="Password" /> <input
+						type="text" name="fullname" placeholder="Full name" /> <input
+						type="text" name="phonenumber" placeholder="Phone number" /> <input
+						type="hidden" name="role" id="roleInput" value="staff" /> <select
+						id="roleSelection">
+						<option>Empolyee</option>
+						<option>Admin</option>
+					</select> <input type="submit" value="Insert" />
+				</form>
+			</div>
+		</div>
 
-            </div>
+	</div>
 
-            <div id="customMenu">
-                <a>Delete</a> <a>Copy</a> <a>Paste</a> <a>Select this row</a>
-            </div>
+	<div id="customMenu">
+		<a>Delete</a> <a>Copy</a> <a>Paste</a> <a>Select this row</a>
+	</div>
 
 
-            <style>
-                table input {
-                    background-color: transparent;
-                    outline: none;
-                    border: none;
-                    width: 100%;
-                    height: 100%;
-                    pointer-events: none;
-                }
-            </style>
+	<style>
+table input {
+	background-color: transparent;
+	outline: none;
+	border: none;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+</style>
 
-            <script>
+	<script>
                 function getCookie(name) {
                     var cookieArr = document.cookie.split(";");
                     for (var i = 0; i < cookieArr.length; i++) {
@@ -343,6 +344,6 @@
 
             </script>
 
-        </body>
+</body>
 
-        </html>
+</html>

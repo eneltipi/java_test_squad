@@ -44,7 +44,7 @@ public class FrontController {
 	public String welcomePage() {
 		return "dangnhap2";
 	}
-	
+
 	@GetMapping(value = "/upimg")
 	public String welcomePage2() {
 		return "upimg";
@@ -55,37 +55,36 @@ public class FrontController {
 
 	@Autowired
 	protected JdbcTemplate jdbc;
-	
+
 	@Autowired
-	AuthenticationManager authenticationManager;	
+	AuthenticationManager authenticationManager;
 
 	@Autowired
 	JwtUtils jwtUtils;
 
 	@RequestMapping("JWTLogin")
-	public RedirectView authenticateUser(Account user, HttpServletResponse response) {		
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-		
-		SecurityContextHolder.getContext().setAuthentication(authentication);		
+	public RedirectView authenticateUser(Account user, HttpServletResponse response) {
+		Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-		
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
+
+		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
-		
+
 		Cookie cookie = new Cookie("jwt", jwt);
 //		cookie.setHttpOnly(true);
 		cookie.setMaxAge(1800);
 		response.addCookie(cookie);
-		
+
 //		return ResponseEntity.ok(new JwtResponse(userDetails.getEmail(), jwt, roles));
-		return new RedirectView("hienthitaikhoan2");
+		return new RedirectView("concac");
 	}
-	
+
 	@RequestMapping(value = "hienthitaikhoan2")
-	public String showAccount(ModelMap model) {
+	public String showAccount(ModelMap model) { 
 		String notice = (String) model.get("notice");// get attribute from redirect
 
 		List<Account> accountList = dao.getAll();
@@ -99,7 +98,7 @@ public class FrontController {
 	@RequestMapping(value = "insert", method = RequestMethod.POST)
 	public @ResponseBody String insert(ModelMap model, Account user, RedirectAttributes redirectAttributes) {
 		String response = null;
-		
+
 		try {
 			String result = dao.insert(user);
 			if (result.equalsIgnoreCase("success")) {
