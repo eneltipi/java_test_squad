@@ -32,7 +32,6 @@ searchField.addEventListener("keyup", (e) => {
         document.getElementById('clearSearching').innerText = "x";
     }
     if(inputValue.length == 0) {
-        console.log('qqqqqq')
         loadAccountByFilter(inputValue)
         document.getElementById('clearSearching').innerText = "";       
     }

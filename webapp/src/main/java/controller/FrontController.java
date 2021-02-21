@@ -63,9 +63,11 @@ public class FrontController {
 	JwtUtils jwtUtils;
 
 	@RequestMapping("JWTLogin")
-	public RedirectView authenticateUser(Account user, HttpServletResponse response) {		
+	public RedirectView authenticateUser(Account user, HttpServletResponse response, RedirectAttributes redirectAttributes) {		
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+		
+		System.out.println("dsadasdasd" + authentication);
 		
 		SecurityContextHolder.getContext().setAuthentication(authentication);		
 		String jwt = jwtUtils.generateJwtToken(authentication);
@@ -75,23 +77,35 @@ public class FrontController {
 				.map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 		
+		System.out.println("user role"+userDetails.getEmail());
 		Cookie cookie = new Cookie("jwt", jwt);
 //		cookie.setHttpOnly(true);
 		cookie.setMaxAge(1800);
 		response.addCookie(cookie);
 		
 //		return ResponseEntity.ok(new JwtResponse(userDetails.getEmail(), jwt, roles));
+		redirectAttributes.addFlashAttribute("userRole", roles);
+		redirectAttributes.addFlashAttribute("userEmail", userDetails.getEmail());
+		
 		return new RedirectView("hienthitaikhoan2");
 	}
 	
 	@RequestMapping(value = "hienthitaikhoan2")
 	public String showAccount(ModelMap model) {
+
+		System.out.println(SecurityContextHolder.getContext().getAuthentication());		
 		String notice = (String) model.get("notice");// get attribute from redirect
 
 		List<Account> accountList = dao.getAll();
 		model.addAttribute("notice", new Gson().toJson(notice));
 		model.addAttribute("accs", accountList);
 		model.addAttribute("userListJSON", new Gson().toJson(accountList));
+		
+		if(model.get("userEmail") != null) {
+			model.addAttribute("userEmail", model.get("userEmail"));
+			model.addAttribute("userRole", model.get("userRole").toString());
+		}
+		
 		returnColumnName(model);
 		return "hienthitaikhoan2";
 	}

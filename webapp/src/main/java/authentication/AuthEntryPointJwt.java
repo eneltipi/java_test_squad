@@ -25,7 +25,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 //		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "18+ only");
-//		response.sendRedirect("/webapp/hienthitaikhoan2");
+		response.sendRedirect("/webapp/");
 	}
 
 	

@@ -17,13 +17,13 @@ public class UserService  {
 
 	public User loadUserByUsername(String email) {
 		System.out.println("this is user service");
-		User user = new User();
+		User user = null;
 
 		try {
 			Connection connection = jdbc2.getDataSource().getConnection();
 			PreparedStatement pstmt = connection.prepareStatement("select * from account where email = '"+email+"'");
 			ResultSet rs = pstmt.executeQuery();
-
+			user = new User();
 			if (rs.next()) {
 				user.setEmail(rs.getString(1));
 				user.setPassword("$2y$12$Cg4XLgtggOjN4fltMm1UDu9KVrhT.8Ho00sLB/nc72fEmSlPOdhBS");

@@ -132,13 +132,16 @@
     box-shadow: 3px 3px 7px black;
 }
 
-#searchBar input[type=text] {
+#searchBar input {
     outline: none;
     padding-left: 15px;
     padding-right: 0px;
     width: 300px;
     border: 1px solid black;
     border-right: none;
+}
+#searchBar div{
+	line-height: 50px
 }
 
 #clearSearching {
@@ -225,3 +228,36 @@ form[action="insert"] input[type="submit"]{
     background-color: rgb(49, 49, 49);
     cursor: pointer;
 }
+
+/* This is menu */
+.menu{
+    height: 50px;
+    width: 100%;
+    margin: auto;
+    background-color: rgb(35, 37, 43);
+    box-shadow: 0px 1px 5px black;
+    position: relative;
+}
+
+.menu > div{
+    position: absolute;
+    display: grid;    
+    grid-template-columns: auto 100px 100px;
+    right: 0px;
+    width: fit-content;
+    color: white
+}
+
+.menu > div div{
+    line-height: 50px;
+    padding:0px 10px;
+    text-align:  center;
+}
+
+.logout{
+    background-color: black;
+}
+
+.logout:hover{
+    background-color: rgba(0, 0, 0, 0.4);
+    cursor: pointer
