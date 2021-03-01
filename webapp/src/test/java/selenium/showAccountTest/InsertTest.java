@@ -62,7 +62,7 @@ public class InsertTest {
 			
 			//Get the password element
 			WebElement password = driver.findElement(uimap.getLocator("password"));
-			password.sendKeys(datafile.getData("password"));
+			password.sendKeys(datafile.getData("insertPassword"));
 
 			WebElement fullname = driver.findElement(uimap.getLocator("fullname"));
 			fullname.sendKeys(datafile.getData("fullname"));
@@ -86,12 +86,18 @@ public class InsertTest {
 		try {
 			WebElement login = driver.findElement(uimap.getLocator("insertSubmit"));
 			login.click();
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 			
 			String newAccountName = datafile.getData("email");
-			System.out.println(newAccountName);
-			 WebElement newAccount = driver.findElement(By.name(newAccountName));
-			System.out.println(newAccount);
+			System.out.println("-----------------------------------------"+newAccountName);
+			WebElement newAccountElement = driver.findElement(By.name(newAccountName));
+			
+			if(newAccountElement != null) {
+				Assert.assertTrue(true);
+			}
+			else{
+				Assert.assertTrue(false);
+			}
 			
 			TestNGResults.put("4", new Object[] {3d, "Click Login and verify welcome message","Login success","Pass"});
 		}catch (Exception e) {
