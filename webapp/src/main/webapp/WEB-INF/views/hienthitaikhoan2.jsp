@@ -16,19 +16,15 @@
 </head>
 
 <body>
-	<script>
+			<script>
                 var notice = ${ notice }; //Insert notice from the controller
-
                 // Check if any notice from the controller and alert it
                 if (notice != null) {
                     alert(notice);
                 }
-
                 var array = ${ userListJSON }; // AccountList            
-
                 const columnName = ${ columnNameJSON };// ColumnNameList
             </script>
-
 
 			 <div class="menu">
 		        <div>
@@ -40,13 +36,12 @@
 
             <div class="container">
                 <div class="middle content">
-    
                     <form id="searchBar">
                         <input type="text" id="searchInput" />
                         <div id='clearSearching'></div>
                         <div>Find</div>
                     </form>
-
+                    
                     <table cellpadding="10">
                         <thead>
                             <tr>
@@ -67,25 +62,15 @@
 									<td>${a.getRole()?"Admin":"Employee"}</td>
 									<td>${a.getDateCreated()}</td>
 								</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-
-			<div id="consoleLog">
-				<div id="consoleLogButton"></div>
-				<textarea id="actionLog"></textarea>
-				<div>
-					<div>Previous</div>
-					<div>Next</div>
+							</c:forEach>
+						</tbody>
+					</table>
 				</div>
-			</div>
-
-		</div>
 
 		<div class="right content">
 			<div id="rightButton"></div>
 			<div>
-				<form action="insert" method="post" id="lol">
+				<form action="insert" method="post" id="insertForm">
 					<input type="text" name="email" placeholder="Username" /> <input
 						type="text" name="password" placeholder="Password" /> <input
 						type="text" name="fullname" placeholder="Full name" /> <input
@@ -132,18 +117,12 @@ table input {
                 async function postData(url = '', data = {}) {
                     const response = await fetch(url, {
                         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                        mode: 'cors', // no-cors, *cors, same-origin
-                        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                        credentials: 'same-origin', // include, *same-origin, omit   
+                       
                         headers: {
                             'Content-Type': 'application/json',
-                            // 'Content-Type': 'application/x-www-form-urlencoded',
                             'Authorization': "Bearer " + getCookie('jwt')
                         },
-                        redirect: 'follow', // manual, *follow, error
-                        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                        body: JSON.stringify(data) // body data type must match "Content-Type" header
-                        // body: data
+                         body: JSON.stringify(data) // body data type must match "Content-Type" header
                     });
                     return response.json(); // parses JSON response into native JavaScript objects
                 }
@@ -154,14 +133,14 @@ table input {
                         headers: {
                             'Authorization': "Bearer " + getCookie('jwt')
                         },
-                        body: new FormData(document.getElementById('lol')) // body data type must match "Content-Type" header
+                        body: new FormData(document.getElementById('insertForm'))
                     });
                     return response;
                 }
 
-                document.getElementById('lol').addEventListener('submit', e => {
+                document.getElementById('insertForm').addEventListener('submit', e => {
                     e.preventDefault();
-                    aaa('/webapp/insert', e.target).then((response) => {
+                    aaa('/webapp/insert').then((response) => {
                         console.log(response)
                         if(response.status == 403){
                             alert("Authentication deny!")
@@ -173,7 +152,6 @@ table input {
 
                 const table = document.querySelector('tbody');
                 const customMenu = document.querySelector("#customMenu");
-
                 var tableClick = 0;
                 var selectedRow = table.rows[0];
                 var selectedCell = selectedRow.cells[0];
@@ -229,7 +207,6 @@ table input {
                                     if (newValue.trim().length > 0) {
                                         let selectedRowIndex = selectedRow.rowIndex;
                                         let selectedCellIndex = selectedCell.cellIndex;
-
                                         let email = array[selectedRowIndex - 1].email;
 
                                         let content = {
@@ -238,27 +215,13 @@ table input {
                                             newValue: newValue
                                         };
 
-                                        // $.ajax({
-                                        //     method: "post",
-                                        //     data : content,
-                                        //     url: "/webapp/updateCellValue",
-                                        //     async: false,
-                                        //     dataType: "json",
-                                        //     success: function (response) {
-                                        //         array = response;
-                                        //         selectedCell.innerHTML = "";
-                                        //         selectedCell.innerText = newValue;
-                                        //     }
-                                        // })
-
                                         postData('/webapp/updateCellValue', content)
                                             .then(response => {
-                                                console.log("dsds" + response); // JSON data parsed by `data.json()` call
+                                                console.log(response)// JSON data parsed by `data.json()` call
                                                 array = response;
                                                 selectedCell.innerHTML = "";
                                                 selectedCell.innerText = newValue;
                                             });
-
 
                                     } else {
                                         selectedCell.innerHTML = "";
@@ -273,6 +236,20 @@ table input {
                     }
                 });
 
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 document.getElementById("roleSelection").addEventListener("change", e => {
                     let selectedValue = e.target.options[e.target.selectedIndex].text;
                     let roleInput = document.getElementById("roleInput");
@@ -288,22 +265,6 @@ table input {
                     if (option == "Delete") {
                         let email = selectedRow.children[1].innerHTML;
 
-                        // $.ajax({
-                        //     method: "post",
-                        //     data: {username: username},
-                        //     url: "/webapp/deleteAccount",
-                        //     async: false,	
-                        //     dataType: "json",
-                        //     success: function (response) {
-                        //         if (response == 1) {
-                        //             selectedRow.remove();
-                        //             alert("Account successfully deleted");
-                        //         } else {
-                        //             alert("Failed to delete account");
-                        //         }
-                        //     }
-                        // });
-
                         postData('/webapp/deleteAccount', { email: email })
                             .then(response => {
                                 if (response == 1) {
@@ -317,35 +278,8 @@ table input {
                     customMenu.style.zIndex = "-1";
                 });
 
-                // open-close right panel onclick
-                var isRightPanelOpen = true;
-
-                document.querySelector("#rightButton").addEventListener("click", () => {
-                    if (isRightPanelOpen) {
-                        document.querySelector(".container").style.width = "calc(100% + 230px)";
-                        isRightPanelOpen = false;
-                    } else {
-                        document.querySelector(".container").style.width = "100%";
-                        isRightPanelOpen = true;
-                    }
-                });
-
-                // open-close console-log panel onclick
-                var isConsoleLogOpen = true;
-
-                document.querySelector("#consoleLogButton").addEventListener("click", () => {
-                    if (isConsoleLogOpen) {
-                        document.querySelector(".middle").style.height = "calc(100% + 180px)";
-                        isConsoleLogOpen = false;
-                    } else {
-                        document.querySelector(".middle").style.height = "100%";
-                        isConsoleLogOpen = true;
-                    }
-                });
-
 
             </script>
-
 </body>
 
 </html>
