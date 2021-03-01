@@ -1,4 +1,4 @@
-package selenium;
+package selenium.showAccountTest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -14,6 +15,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -22,7 +24,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class AutoTestLogin {
+import selenium.UIMap;
+
+public class InsertTest {
 
 	public WebDriver driver;
 	public UIMap uimap;
@@ -41,29 +45,32 @@ public class AutoTestLogin {
 	@Test(description="Open the TestNG Demo Website for Login Test", priority=1)
 	public void LaunchWebsite() throws Exception {
 		try {
-			driver.get("http://localhost:8080/webapp/");
+			driver.get("http://localhost:8080/webapp/hienthitaikhoan2");
 			driver.manage().window().maximize();
-			
-//			headless
-//			Chrome + firefox
 		} catch (Exception e) {
 			TestNGResults.put("2", new Object[] {1d, "Navigate to demo website","Site gets opened","Fail"});
 			Assert.assertTrue(false);
 		}
 	}
 	
-	@Test(description = "Fill the Login Details", priority=2)
+	@Test(description = "Fill the insertForm", priority=2)
 	public void FillLoginDetails() throws Exception {
 		try {
 			//Get the username element
-			WebElement username = driver.findElement(uimap.getLocator("email"));
-			username.sendKeys(datafile.getData("username"));
+			WebElement email = driver.findElement(uimap.getLocator("email"));
+			email.sendKeys(datafile.getData("email"));
 			
 			//Get the password element
-			WebElement password = driver.findElement(uimap.getLocator("Password_filed"));
+			WebElement password = driver.findElement(uimap.getLocator("password"));
 			password.sendKeys(datafile.getData("password"));
+
+			WebElement fullname = driver.findElement(uimap.getLocator("fullname"));
+			fullname.sendKeys(datafile.getData("fullname"));
+
+			WebElement phonenumber = driver.findElement(uimap.getLocator("phonenumber"));
+			phonenumber.sendKeys(datafile.getData("phonenumber"));
 			
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 			
 			TestNGResults.put("3", new Object[] {2d, "Fill Login form data (Username/Password",
 									"Login details gets filled","Pass"});
@@ -77,15 +84,15 @@ public class AutoTestLogin {
 	@Test(description="Perform Login", priority=3)
 	public void DoLogin() throws Exception {
 		try {
-			//Click on the login button
-			WebElement login = driver.findElement(uimap.getLocator("Login_button"));
+			WebElement login = driver.findElement(uimap.getLocator("insertSubmit"));
 			login.click();
-			
 			Thread.sleep(1000);
 			
-			//Assert the user login by checking the Online user
-			WebElement onlineuser = driver.findElement(uimap.getLocator("online_user"));
-			//AssertJUnit.assertEquals("Hi, John Smith",onlineuser_getText());
+			String newAccountName = datafile.getData("email");
+			System.out.println(newAccountName);
+			 WebElement newAccount = driver.findElement(By.name(newAccountName));
+			System.out.println(newAccount);
+			
 			TestNGResults.put("4", new Object[] {3d, "Click Login and verify welcome message","Login success","Pass"});
 		}catch (Exception e) {
 			TestNGResults.put("4", new Object[] {3d, "Click Login and verify welcome message", "Login success","Fail"});

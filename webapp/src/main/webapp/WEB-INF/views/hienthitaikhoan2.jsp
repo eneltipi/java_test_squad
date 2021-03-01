@@ -29,14 +29,14 @@
                 const columnName = ${ columnNameJSON };// ColumnNameList
             </script>
 
-<<<<<<< HEAD
- <div class="menu">
-        <div>
-            <div class="username">${userEmail}</div>
-            <div class="role">${userRole}</div>
-            <div class="logout">Logout</div>
-        </div>
-    </div>
+
+			 <div class="menu">
+		        <div>
+		            <div class="username">${userEmail}</div>
+		            <div class="role">${userRole}</div>
+		            <div class="logout">Logout</div>
+		        </div>
+		    </div>
 
             <div class="container">
                 <div class="middle content">
@@ -58,47 +58,15 @@
                         </thead>
                         <tbody>
                             <c:forEach var="a" items="${accs}">
-                                <tr>
-                                    <%-- <td>
-=======
-	<div class="container">
-		<div class="middle content">
-			<form id="searchBar" action="search" method="post">
-				<input type="text" id="searchInput" />
-				<div id='clearSearching'></div>
-				<input type="submit" value="find" />
-			</form>
-
-			<table cellpadding="10">
-				<thead>
-					<tr>
-						<th></th>
-						<c:forEach var="column" items="${columnNameJAVA}">
-							<th>${column}</th>
-						</c:forEach>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="a" items="${accs}">
-						<tr>
-							<%-- <td>
->>>>>>> 064b43e0fe1e57e7a6e02282eeac615a80172bbe
-                                        </td>
-                                        <td>${a.getUsername()}</td>
-                                        <td>${a.getPassword()}</td>
-                                        <td>${a.getFullname()}</td>
-                                        <td>${a.getPhonenumber()}</td>
-                                        <td>${a.getRole()?"Admin":"Employee"}</td>
-                                        <td>${a.getDateCreated()}</td> --%>
-
-							<td></td>
-							<td>${a.getEmail()}</td>
-							<td>${a.getPassword()}</td>
-							<td>${a.getFullname()}</td>
-							<td>${a.getPhonenumber()}</td>
-							<td>${a.getRole()?"Admin":"Employee"}</td>
-							<td>${a.getDateCreated()}</td>
-						</tr>
+                                <tr name="${a.getEmail()}">
+									<td></td>
+									<td>${a.getEmail()}</td>
+									<td>${a.getPassword()}</td>
+									<td>${a.getFullname()}</td>
+									<td>${a.getPhonenumber()}</td>
+									<td>${a.getRole()?"Admin":"Employee"}</td>
+									<td>${a.getDateCreated()}</td>
+								</tr>
 					</c:forEach>
 				</tbody>
 			</table>
@@ -126,7 +94,7 @@
 						id="roleSelection">
 						<option>Empolyee</option>
 						<option>Admin</option>
-					</select> <input type="submit" value="Insert" />
+					</select> <input type="submit" name="insertSubmit" value="Insert" />
 				</form>
 			</div>
 		</div>
@@ -194,6 +162,7 @@ table input {
                 document.getElementById('lol').addEventListener('submit', e => {
                     e.preventDefault();
                     aaa('/webapp/insert', e.target).then((response) => {
+                        console.log(response)
                         if(response.status == 403){
                             alert("Authentication deny!")
                         }else{

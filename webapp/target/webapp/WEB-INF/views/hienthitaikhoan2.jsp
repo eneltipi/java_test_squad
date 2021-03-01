@@ -47,16 +47,7 @@
                         </thead>
                         <tbody>
                             <c:forEach var="a" items="${accs}">
-                                <tr>
-                                    <%-- <td>
-                                        </td>
-                                        <td>${a.getUsername()}</td>
-                                        <td>${a.getPassword()}</td>
-                                        <td>${a.getFullname()}</td>
-                                        <td>${a.getPhonenumber()}</td>
-                                        <td>${a.getRole()?"Admin":"Employee"}</td>
-                                        <td>${a.getDateCreated()}</td> --%>
-
+                                <tr name="${a.getEmail()}" }>
                                         <td></td>
                                         <td>${a.getEmail()}</td>
                                         <td>${a.getPassword()}</td>

@@ -30,7 +30,9 @@ public class AccountDAOTest {
 	
 	  @Test 
 	  public void checkLoginFalse() {
-		  
+//		  Sua lai thanh checkLoginFalse
+//		  Them mang hai chieu
+//		  Them Priority
 	  assertFalse(dao.checkLogin("vien", "abc"));
 	  
 	  } 

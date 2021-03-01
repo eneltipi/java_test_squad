@@ -61,10 +61,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/hienthitaikhoan2").permitAll()
 		.antMatchers("/JWTLogin").permitAll()
 		.antMatchers("/getLaptopList").permitAll()
-		.antMatchers("/upimg").hasAuthority("admin")
-		.antMatchers("/insert").hasAuthority("admin")
-		.antMatchers("/updateCellValue").hasAuthority("admin")
-		.antMatchers("/deleteAccount").hasAuthority("admin")
+//		.antMatchers("/upimg").hasAuthority("admin")
+//		.antMatchers("/insert").hasAuthority("admin")
+//		.antMatchers("/updateCellValue").hasAuthority("admin")
+//		.antMatchers("/deleteAccount").hasAuthority("admin")
+		.antMatchers("/upimg").permitAll()
+		.antMatchers("/insert").permitAll()
+		.antMatchers("/updateCellValue").permitAll()
+		.antMatchers("/deleteAccount").permitAll()
 		.anyRequest().authenticated();
      
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

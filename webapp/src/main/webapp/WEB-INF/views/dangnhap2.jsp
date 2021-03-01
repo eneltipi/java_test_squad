@@ -20,8 +20,7 @@
 
 	<div class="bg-overlay">
 		<form:form class="container" action="JWTLogin" method="POST">
-			<input type="text" name="email" placeholder="username"
-				>
+			<input type="text" name="email" placeholder="username">
 			<a class="validateNotice">${errorUsername}</a>
 			<input type="password" name="password" placeholder="password"
 				>
