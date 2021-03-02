@@ -2,6 +2,8 @@ package dao;
 
 import java.io.Serializable;
 import model.Account;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -130,17 +132,24 @@ public class AccountDAO {
     
     	
     	public boolean checkLogin(String email, String passwrod) {
+    		List<Account> list = new ArrayList<>();
     		
-    		Account user = findAccount(email);
+    		list.add(new Account("anh@gmail.com","123"));
+        	list.add(new Account("bao@gmail.com","123"));
+        	list.add(new Account("khoi@gmail.com","123"));
+        	list.add(new Account("vien@gmail.com","123"));
     		
-    		if (user.getEmail().equals(email)) {
-    			if (user.getPassword().equals(passwrod)) {
-    				return true;
-    			} else {
-    				return false;
-    			}
-    		} else {
-    			return false;
-    		}
+        	for (int i = 0; i < list.size(); i++) {
+        		if(email.equals(list.get(i).getEmail())) {
+        			if(passwrod.equals(list.get(i).getPassword())) {
+        				return true;
+        			} else {
+        				return false;
+        			}
+        			
+        		}
+        	} 
+        	return false;
+        	
     	}
 }

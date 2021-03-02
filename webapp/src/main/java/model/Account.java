@@ -25,6 +25,12 @@ public class Account{
     public Account() {
 //        System.out.println("Creating new instance..............");
     }
+    
+    public Account(String email, String password) {
+    	this.email = email;
+    	this.password = password;
+//      System.out.println("Creating new instance..............");
+  }
 
     public void setFullname(String fullname) {
         this.fullname = fullname;

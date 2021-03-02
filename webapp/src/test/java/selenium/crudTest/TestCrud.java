@@ -85,7 +85,7 @@ public class TestCrud {
       
       js.executeScript("return deleteRow()");
       Thread.sleep(2000);
-      
+      driver.switchTo().alert().accept();
       String newTableSize = (String) js.executeScript("return tableSize()");
       
       System.out.println(tableSize);
