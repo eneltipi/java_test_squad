@@ -3,6 +3,10 @@ package selenium.crudTest;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileInputStream;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +16,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterTest;
 
 public class TestCrud {
 	WebDriver driver;
@@ -21,7 +26,7 @@ public class TestCrud {
 	WebElement inputPhoneInsert;
 	WebElement roleInsert;
 	WebElement insertSubmit;
-
+	
 	@Before
 	public void starting() {
 		try {
@@ -54,7 +59,7 @@ public class TestCrud {
 		inputFnameInsert = driver.findElement(By.name("fullname"));
 		inputPhoneInsert = driver.findElement(By.name("phonenumber"));
 		roleInsert = driver.findElement(By.id("roleSelection"));
-		String tableSize = (String) js.executeScript("return tableSize()");
+		String tableSize = (String) js.executeScript("return gaugau.tableSize()");
 		Select objSelect = new Select(roleInsert);
 		inputNameInsert.sendKeys("dit me no");
 		inputPassInsert.sendKeys("aaaa");
@@ -67,7 +72,7 @@ public class TestCrud {
 		insertSubmit.click();
 		Thread.sleep(2000);
 
-		String newTableSize = (String) js.executeScript("return tableSize()");
+		String newTableSize = (String) js.executeScript("return gaugau.tableSize()");
 	
 		if (Integer.valueOf(newTableSize) == (Integer.valueOf(tableSize) + 1)) {
 			assertTrue(true);
@@ -81,25 +86,26 @@ public class TestCrud {
       System.out.println("i am batboi");
       JavascriptExecutor js = (JavascriptExecutor) driver;
 
-      String tableSize = (String) js.executeScript("return tableSize()");
-      
-      js.executeScript("return deleteRow()");
-      Thread.sleep(2000);
-      driver.switchTo().alert().accept();
-      String newTableSize = (String) js.executeScript("return tableSize()");
-      
-      System.out.println(tableSize);
-      System.out.println(newTableSize);
-      
-      if (Integer.valueOf(newTableSize) == (Integer.valueOf(tableSize) - 1 )) {
-          assertTrue(true);
-      } else {
-          assertFalse(false);
-      }
+      js.executeScript("return gaugau.deleteRow()");
+      Thread.sleep(500);
+      String result = driver.switchTo().alert().getText();
+      // TRƯỜNG HỢP NÀY THÌ MẤY CON DẶM THÊM VÀO JS OBJECT GAUGAU.AJAX CÁI INSERT KÈM THEO OBJECT INSERT NHÉ CÁC CON, CHA LÀM MẪU RỒI ĐÓ THEN GỌI LẠI HÀM NGU LỒN NÀY ĐỂ XÓA NHÉ CÁC CON CỦA CHA
+      if(result.equalsIgnoreCase("this is default account")) System.out.println("READ COMMENT ABOVE THIS IF");
+      if(result.equalsIgnoreCase("Account successfully deleted")) assertTrue(true);
+      else if(result.equalsIgnoreCase("Failed to delete account")) assertFalse(false);
   }
   
 	@After
 	public void finish() {
-		this.driver.quit();
+		driver.quit();
+		
+	}
+	@AfterTest
+	public void close() {
+	
+//		FileInputStream fis = new FileInputStream(new File("src\\test\\java\\selenium\\crudTest\\crudTest.xlsx"));
+//		XSSFWorkbook wb = new X
+		//ngắt kết nối ko thì bị lỗi ngu lồn của con bátboi. con nào dời hàm này lên after thì mất session đéo chạy case delete được nhé các con của cha
+		driver.close();
 	}
 }

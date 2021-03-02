@@ -102,24 +102,48 @@ table input {
 }
 </style>
 
-	<script>
+	<script>	
 	
-	function tableSize(){
-		return document.querySelector('tbody').children.length+"";
-	}
+			var gaugau = {
+					_default_account: "${userEmail}",
+					mail : function Email(Mail){this.email = Mail;},
+					tableSize(){
+						return this.getTbody().children.length+"";
+					},
+					checkDeleteAccountID(email){
+						return email === this._default_account ? this.deleteRow : email
+					},
+					deleteRow(){
+						let tbody = gaugau.getTbody();
+						if(tbody.children.length === 1){return alert("this is default account") };
+						let selectedRow = tbody.children[Math.floor(Math.random() * tbody.children.length)]
+				       let result =  gaugau.checkDeleteAccountID(selectedRow.children[1].innerText)				    		   
+				    		   if(result instanceof Function)result();
+				    		   else{
+				    			   gaugau.selectedRow = selectedRow;
+				    			   gaugau.ajax('/webapp/deleteAccount',new gaugau.mail(result));
+				    		   }
+				    },
+					getTbody(setOrGet){
+						 return document.querySelector('tbody');;
+					},
+					ajax(url,obj){
+						
+						if(!obj instanceof this.mail && url === '/webapp/deleteAccount') return;
+						
+						postData(url, obj)
+                        .then(response => {
+                            if (response == 1) {
+                                gaugau.selectedRow.remove();
+                                alert("Account successfully deleted");
+                            } else {
+                                alert("Failed to delete account");
+                            }
+                        }) 
+						
+					}
+			};
 	
-    function deleteRow(){
-        let email =  document.querySelector("tbody").children[Math.floor(Math.random() * document.querySelector("tbody").children.length)].children[1].innerText
-         postData('/webapp/deleteAccount', { email: email })
-                                .then(response => {
-                                    if (response == 1) {
-                                        selectedRow.remove();
-                                        alert("Account successfully deleted");
-                                    } else {
-                                        alert("Failed to delete account");
-                                    }
-                                })
-    }
                 function getCookie(name) {
                     var cookieArr = document.cookie.split(";");
                     for (var i = 0; i < cookieArr.length; i++) {
