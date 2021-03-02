@@ -103,6 +103,11 @@ table input {
 </style>
 
 	<script>
+	
+	function tableSize(){
+		return document.querySelector('tbody').children.length+"";
+	}
+	
                 function getCookie(name) {
                     var cookieArr = document.cookie.split(";");
                     for (var i = 0; i < cookieArr.length; i++) {
