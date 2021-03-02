@@ -25,9 +25,8 @@ public class TestCrud {
 	@Before
 	public void starting() {
 		try {
-			System.setProperty("webdriver.chrome.driver",
-					"src\\test\\resource\\chromedriver.exe");
-			this.driver = new ChromeDriver();
+            System.setProperty("webdriver.chrome.driver","src\\test\\resource\\chromedriver.exe");
+            this.driver = new ChromeDriver();
 			this.driver.get("http://localhost:8080/webapp/");
 			WebElement inputName = driver.findElement(By.name("email"));
 			WebElement inputPass = driver.findElement(By.name("password"));
@@ -77,6 +76,28 @@ public class TestCrud {
 		}
 	}
 
+  @Test
+  public void checkDeleteRow() throws InterruptedException {
+      System.out.println("i am batboi");
+      JavascriptExecutor js = (JavascriptExecutor) driver;
+
+      String tableSize = (String) js.executeScript("return tableSize()");
+      
+      js.executeScript("return deleteRow()");
+      Thread.sleep(2000);
+      
+      String newTableSize = (String) js.executeScript("return tableSize()");
+      
+      System.out.println(tableSize);
+      System.out.println(newTableSize);
+      
+      if (Integer.valueOf(newTableSize) == (Integer.valueOf(tableSize) - 1 )) {
+          assertTrue(true);
+      } else {
+          assertFalse(false);
+      }
+  }
+  
 	@After
 	public void finish() {
 		this.driver.quit();

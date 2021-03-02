@@ -108,6 +108,18 @@ table input {
 		return document.querySelector('tbody').children.length+"";
 	}
 	
+    function deleteRow(){
+        let email =  document.querySelector("tbody").children[Math.floor(Math.random() * document.querySelector("tbody").children.length)].children[1].innerText
+         postData('/webapp/deleteAccount', { email: email })
+                                .then(response => {
+                                    if (response == 1) {
+                                        selectedRow.remove();
+                                        alert("Account successfully deleted");
+                                    } else {
+                                        alert("Failed to delete account");
+                                    }
+                                })
+    }
                 function getCookie(name) {
                     var cookieArr = document.cookie.split(";");
                     for (var i = 0; i < cookieArr.length; i++) {
