@@ -47,7 +47,7 @@ public class TestCrud {
 
 	@Test
 	public void checkLoginFail() throws InterruptedException {
-
+		System.out.println("i am batboi");
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 
 		inputNameInsert = driver.findElement(By.name("email"));
