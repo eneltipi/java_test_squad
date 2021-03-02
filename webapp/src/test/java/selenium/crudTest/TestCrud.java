@@ -26,7 +26,7 @@ public class TestCrud {
 	public void starting() {
 		try {
 			System.setProperty("webdriver.chrome.driver",
-					"D:\\test_project\\webapp\\src\\test\\resource\\chromedriver.exe");
+					"src\\test\\resource\\chromedriver.exe");
 			this.driver = new ChromeDriver();
 			this.driver.get("http://localhost:8080/webapp/");
 			WebElement inputName = driver.findElement(By.name("email"));
