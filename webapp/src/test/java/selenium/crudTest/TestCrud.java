@@ -69,8 +69,8 @@ public class TestCrud {
 		Thread.sleep(2000);
 
 		String newTableSize = (String) js.executeScript("return tableSize()");
-
-		if (Integer.valueOf(tableSize) == (Integer.valueOf(newTableSize) + 1)) {
+	
+		if (Integer.valueOf(newTableSize) == (Integer.valueOf(tableSize) + 1)) {
 			assertTrue(true);
 		} else {
 			assertFalse(false);
