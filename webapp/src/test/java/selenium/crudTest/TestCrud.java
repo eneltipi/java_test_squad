@@ -3,11 +3,8 @@ package selenium.crudTest;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.FileInputStream;
-
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -16,10 +13,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.annotations.AfterTest;
+
 
 public class TestCrud {
-	WebDriver driver;
+	static WebDriver driver;
 	WebElement inputNameInsert;
 	WebElement inputPassInsert;
 	WebElement inputFnameInsert;
@@ -31,8 +28,8 @@ public class TestCrud {
 	public void starting() {
 		try {
             System.setProperty("webdriver.chrome.driver","src\\test\\resource\\chromedriver.exe");
-            this.driver = new ChromeDriver();
-			this.driver.get("http://localhost:8080/webapp/");
+            driver = new ChromeDriver();
+			driver.get("http://localhost:8080/webapp/");
 			WebElement inputName = driver.findElement(By.name("email"));
 			WebElement inputPass = driver.findElement(By.name("password"));
 			WebElement btnLogIn = driver.findElement(By.className("loginbtn"));
@@ -100,11 +97,8 @@ public class TestCrud {
 		driver.quit();
 		
 	}
-	@AfterTest
-	public void close() {
-	
-//		FileInputStream fis = new FileInputStream(new File("src\\test\\java\\selenium\\crudTest\\crudTest.xlsx"));
-//		XSSFWorkbook wb = new X
+	@AfterClass
+	public static void close() {
 		//ngắt kết nối ko thì bị lỗi ngu lồn của con bátboi. con nào dời hàm này lên after thì mất session đéo chạy case delete được nhé các con của cha
 		driver.close();
 	}
