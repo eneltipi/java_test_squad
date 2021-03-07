@@ -1,24 +1,20 @@
 package selenium.crudTest;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.util.Map;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 public class TestUpdate {
 	static WebDriver driver;
@@ -30,7 +26,7 @@ public class TestUpdate {
 	WebElement insertSubmit;
 	String chromeDriverPath = "src\\test\\resource\\chromedriver.exe";
 	
-	@Before
+	@BeforeClass
 	public void starting() {
 		try {
             System.setProperty("webdriver.chrome.driver", chromeDriverPath);
@@ -50,23 +46,27 @@ public class TestUpdate {
   
   @Test
   public void checkUpdateRow() throws InterruptedException, AWTException {
-	Robot robot = new Robot();
-	JavascriptExecutor js = (JavascriptExecutor) driver;
-	WebElement cell = (WebElement) js.executeScript("return gaugau.getRandomCell()");
-	cell.click();
-	cell.click();
-	Thread.sleep(500);
-	WebElement input = cell.findElement(By.name("currentInput"));
-  	String newValue = "new Value";
-  	input.sendKeys(newValue);
-	Thread.sleep(500);
-	robot.keyPress(KeyEvent.VK_ENTER);
-	robot.keyRelease(KeyEvent.VK_ENTER);
-	Thread.sleep(2000);
-	assertTrue(cell.getText().equalsIgnoreCase(newValue));
+	  try {
+		Robot robot = new Robot();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebElement cell = (WebElement) js.executeScript("return gaugau.getRandomCell()");
+		cell.click();
+		cell.click();
+		Thread.sleep(300);
+		WebElement input = cell.findElement(By.name("currentInput"));
+		String newValue = "new Value";
+		input.sendKeys(newValue);
+		Thread.sleep(300);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		Thread.sleep(1000);
+		assertTrue(cell.getText().equalsIgnoreCase(newValue));
+	  } catch (Exception e) {
+			System.out.println(e.toString());
+	  }
   }
   
-	@After
+	@AfterTest
 	public void finish() {
 		driver.quit();
 		
@@ -74,6 +74,6 @@ public class TestUpdate {
 	
 	@AfterClass
 	public static void close() {
-//		driver.close();
+		driver.close();
 	}
 }

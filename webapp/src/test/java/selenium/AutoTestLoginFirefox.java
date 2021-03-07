@@ -30,21 +30,15 @@ public class AutoTestLoginFirefox {
 	public UIMap datafile;
 	public String workingDir;
 	
-	//Declare An Excel Work Book
 	HSSFWorkbook workbook;
-	//Declare An Excel work sheet
 	HSSFSheet sheet;
-	//Declare A Map Object To Hold TestNG Results
 	Map<String, Object[]> TestNGResults;
-	
-	public static String driverPath = "D:\\FPT.edu.vn\\KIEM_THU_NANG_CAO\\Test\\java_test_squad";
-	
+		
 	@Test(description="Open the TestNG Demo Website for Login Test", priority=1)
 	public void LaunchWebsite() throws Exception {
 		try {
 			driver.get("http://localhost:8080/webapp/");
-			driver.manage().window().maximize();
-			
+			driver.manage().window().maximize();			
 //			headless
 //			Chrome + firefox
 		} catch (Exception e) {

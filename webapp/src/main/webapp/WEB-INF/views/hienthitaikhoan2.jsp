@@ -92,19 +92,32 @@
 
 
 	<style>
-table input {
-	background-color: transparent;
-	outline: none;
-	border: none;
-	width: 100%;
-	height: 100%;
-	pointer-events: none;
-}
-</style>
+		table input {
+			background-color: transparent;
+			outline: none;
+			border: none;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+		}
+	</style>
 
 	<script>	
-	
+    const table = document.querySelector('tbody');
+    const customMenu = document.querySelector("#customMenu");
+    var tableClick = 0;
+    var selectedRow = table.rows[0];
+    var selectedCell = selectedRow.cells[0];
+    
 			var gaugau = {
+					getRandomCell(){
+						const selectedRow = table.children[Math.floor(Math.random() * table.children.length)]
+						return selectedRow.children[3]
+					},
+					getRandomCellCordinate(){
+						var rect = this.getRandomCell().getBoundingClientRect();
+						return [rect.top,rect.left];
+					},
 					_default_account: "${userEmail}",
 					mail : function Email(Mail){this.email = Mail;},
 					tableSize(){
@@ -191,12 +204,6 @@ table input {
                     })
                 });
 
-                const table = document.querySelector('tbody');
-                const customMenu = document.querySelector("#customMenu");
-                var tableClick = 0;
-                var selectedRow = table.rows[0];
-                var selectedCell = selectedRow.cells[0];
-
                 // Disable contextmenu on table
                 table.addEventListener('contextmenu', e => {
                     e.preventDefault();
@@ -213,7 +220,6 @@ table input {
 
                 table.addEventListener("mouseup", click => {
                     if (click.button == 0) {
-
                         setTimeout(() => {
                             tableClick = 0;
                         }, 200);
@@ -234,7 +240,7 @@ table input {
 
                         if (tableClick == 2) {
                             let oldValue = selectedCell.innerText;
-                            selectedCell.innerHTML = `<input type='text'>`;
+                            selectedCell.innerHTML = `<input name='currentInput'>`;
                             let inputField = selectedCell.firstChild;
 
                             inputField.focus();
@@ -259,7 +265,6 @@ table input {
 
                                         postData('/webapp/updateCellValue', content)
                                             .then(response => {
-                                                console.log(response)// JSON data parsed by `data.json()` call
                                                 array = response;
                                                 selectedCell.innerHTML = "";
                                                 selectedCell.innerText = newValue;
@@ -278,19 +283,6 @@ table input {
                     }
                 });
 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
                 
                 document.getElementById("roleSelection").addEventListener("change", e => {
                     let selectedValue = e.target.options[e.target.selectedIndex].text;
