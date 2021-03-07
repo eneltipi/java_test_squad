@@ -12,8 +12,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
-
 
 public class Test_Crud_Firefox_Sur_Bao {
 	static WebDriver driver;
@@ -23,27 +23,23 @@ public class Test_Crud_Firefox_Sur_Bao {
 	WebElement inputPhoneInsert;
 	WebElement roleInsert;
 	WebElement insertSubmit;
-	
+
 	@Before
 	public void starting() {
 		try {
-            System.setProperty("webdriver.gecko.driver","//Users//nltbao//Downloads//geckodriver");
-            driver = new FirefoxDriver();
+			System.setProperty("webdriver.gecko.driver", "//Users//nltbao//Downloads//geckodriver");
+			driver = new FirefoxDriver();
 			driver.get("http://localhost:8080/webapp/");
 			WebElement inputName = driver.findElement(By.name("email"));
 			WebElement inputPass = driver.findElement(By.name("password"));
 			WebElement btnLogIn = driver.findElement(By.className("loginbtn"));
-
 			inputName.sendKeys("anh@gmail.com");
 			inputPass.sendKeys("123");
-
 			btnLogIn.click();
 			Thread.sleep(1000);
-
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-
 	}
 
 	@Test
@@ -69,7 +65,7 @@ public class Test_Crud_Firefox_Sur_Bao {
 		Thread.sleep(2000);
 
 		String newTableSize = (String) js.executeScript("return gaugau.tableSize()");
-	
+
 		if (Integer.valueOf(newTableSize) == (Integer.valueOf(tableSize) + 1)) {
 			assertTrue(true);
 		} else {
@@ -77,28 +73,39 @@ public class Test_Crud_Firefox_Sur_Bao {
 		}
 	}
 
-  @Test
-  public void checkDeleteRow() throws InterruptedException {
-      System.out.println("i am batboi");
-      JavascriptExecutor js = (JavascriptExecutor) driver;
+	@Test
+	public void checkDeleteRow() throws InterruptedException {
+		System.out.println("checkDeleteRow");
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String tableSize = (String) js.executeScript("return gaugau.tableSize()");
+		if (Integer.parseInt(tableSize) == 1) {
+			return;
+		}
+		int ran = (int) (Math.random() * (Integer.parseInt(tableSize) + 1 - 2) + 2);
+		System.out.println(tableSize + ": tableSize: " + ran + ": ran");
+		String xpath = String.format("/html/body/div[2]/div[1]/table/tbody/tr[%s]", ran);
+		Actions actions = new Actions(driver);
+		WebElement randomRow = driver.findElement(By.xpath(xpath));
+		actions.contextClick(randomRow).perform();
+		Thread.sleep(1000);
+		WebElement delbtn = driver.findElement(By.xpath("//*[@id=\"customMenu\"]/a[1]"));
+		delbtn.click();
+		String result = driver.switchTo().alert().getText();
+		System.out.println(result + ": result: ");
+		if (result.equalsIgnoreCase("Account successfully deleted")){
+			assertTrue(true);
+		} else {
+			assertFalse(false);
+		}
+	}
 
-      js.executeScript("return gaugau.deleteRow()");
-      Thread.sleep(500);
-      String result = driver.switchTo().alert().getText();
-      // TRƯỜNG HỢP NÀY THÌ MẤY CON DẶM THÊM VÀO JS OBJECT GAUGAU.AJAX CÁI INSERT KÈM THEO OBJECT INSERT NHÉ CÁC CON, CHA LÀM MẪU RỒI ĐÓ THEN GỌI LẠI HÀM NGU LỒN NÀY ĐỂ XÓA NHÉ CÁC CON CỦA CHA
-      if(result.equalsIgnoreCase("this is default account")) System.out.println("READ COMMENT ABOVE THIS IF");
-      if(result.equalsIgnoreCase("Account successfully deleted")) assertTrue(true);
-      else if(result.equalsIgnoreCase("Failed to delete account")) assertFalse(false);
-  }
-  
 	@After
 	public void finish() {
 		driver.quit();
-		
 	}
+
 	@AfterClass
 	public static void close() {
-		//ngắt kết nối ko thì bị lỗi ngu lồn của con bátboi. con nào dời hàm này lên after thì mất session đéo chạy case delete được nhé các con của cha
 		driver.close();
 	}
 }
