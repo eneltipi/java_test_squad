@@ -14,6 +14,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.AfterClass;
 //import org.testng.annotations.AfterTest;
@@ -50,38 +51,35 @@ public class CRUD_Firefox_SirBao {
 		}
 	}
 
-	@Test
+	@Test(priority=1)
 	public void checkDeleteRow() throws InterruptedException {
-		try {
-			Robot robot = new Robot();
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			ArrayList<Double> randomCellCordinate = (ArrayList<Double>) js.executeScript("return gaugau.getRandomCellCordinate()");
-			int x = (int)  Math.round(randomCellCordinate.get(1)+200);
-			int y = (int)  Math.round(randomCellCordinate.get(0)+200);
-			robot.mouseMove(x, y);
-			robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
-			robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
-			Thread.sleep(500);
-			robot.mouseMove(x+20, y+20);
-			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-			Thread.sleep(500);
-			Alert alert = driver.switchTo().alert();
-			String alertContent = alert.getText();
-			Thread.sleep(1000);
-			alert.dismiss();
-			if(alertContent.equalsIgnoreCase("Account successfully deleted")) {
-				assertTrue(true);
-			}
-			else {
-				assertFalse(false);
-			}
-		} catch (AWTException e) {
-			e.printStackTrace();
-		}      
+		System.out.println("checkDeleteRow");
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String tableSize = (String) js.executeScript("return gaugau.tableSize()");
+		if (Integer.parseInt(tableSize) == 1) {
+			return;
+		}
+		int ran = (int) (Math.random() * (Integer.parseInt(tableSize) + 1 - 2) + 2);
+		System.out.println(tableSize + ": tableSize: " + ran + ": ran");
+		String xpath = String.format("/html/body/div[2]/div[1]/table/tbody/tr[%s]/td[2]", ran);
+		Actions actions = new Actions(driver);
+		WebElement randomRow = driver.findElement(By.xpath(xpath));
+		actions.contextClick(randomRow).perform();
+		System.out.println(randomRow + ": randomRow");
+		Thread.sleep(1000);
+		WebElement delbtn = driver.findElement(By.xpath("//*[@id=\"customMenu\"]/a[1]"));
+		delbtn.click();
+		Alert result = driver.switchTo().alert();
+		System.out.println(result + ": result: ");
+		if (result.getText().equalsIgnoreCase("Account successfully deleted")) {
+			assertTrue(true);
+		} else {
+			assertFalse(true);
+		}
+		result.dismiss();
 	}
 	
-	@Test
+	@Test(priority=2)
 	public void checkInsert() throws InterruptedException {
 		try {
 			Thread.sleep(1000);
