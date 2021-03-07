@@ -203,6 +203,7 @@ table input {
                     customMenu.style.top = e.clientY + "px";
                     customMenu.style.left = e.clientX + "px";
                     customMenu.style.zIndex = "1";
+                    selectedRow = e.target.parentNode;
                 });
 
                 // Disable contextmenu on custome menu
