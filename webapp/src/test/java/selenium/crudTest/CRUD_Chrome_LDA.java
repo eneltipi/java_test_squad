@@ -1,7 +1,7 @@
 package selenium.crudTest;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -10,12 +10,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-
-public class TestCrud {
+public class CRUD_Chrome_LDA {
 	static WebDriver driver;
 	WebElement inputNameInsert;
 	WebElement inputPassInsert;
@@ -58,11 +56,12 @@ public class TestCrud {
 		inputFnameInsert.sendKeys("aaaa");
 		inputPhoneInsert.sendKeys("aaaa");
 		objSelect.selectByVisibleText("Admin");
-
+		Thread.sleep(500);
 		insertSubmit = driver.findElement(By.name("insertSubmit"));
 		insertSubmit.click();
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		String newTableSize = (String) js.executeScript("return gaugau.tableSize()");
+		System.out.println(newTableSize+"-------"+tableSize);
 		if (Integer.valueOf(newTableSize) == (Integer.valueOf(tableSize) + 1)) {
 			assertTrue(true);
 		} else {
@@ -72,6 +71,7 @@ public class TestCrud {
 
   @Test(priority=2)
   public void checkDeleteRow() throws InterruptedException {
+	  Thread.sleep(1000);
       JavascriptExecutor js = (JavascriptExecutor) driver;
       js.executeScript("return gaugau.deleteRow()");
       
@@ -80,11 +80,6 @@ public class TestCrud {
       if(result.equalsIgnoreCase("Account successfully deleted")) assertTrue(true);
       else if(result.equalsIgnoreCase("Failed to delete account")) assertFalse(false);
   }
-  
-	@AfterTest
-	public void finish() {
-		driver.quit();
-	}
 	
 	@AfterClass
 	public static void close() {

@@ -12,12 +12,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class TestUpdate {
+public class TestUpdateFireFox {
 	static WebDriver driver;
 	WebElement inputNameInsert;
 	WebElement inputPassInsert;
@@ -25,13 +26,12 @@ public class TestUpdate {
 	WebElement inputPhoneInsert;
 	WebElement roleInsert;
 	WebElement insertSubmit;
-	String chromeDriverPath = "src\\test\\resource\\chromedriver.exe";
 	
 	@BeforeClass
 	public void starting() {
 		try {
-            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-            driver = new ChromeDriver();
+			System.setProperty("webdriver.gecko.driver", "src\\test\\resource\\geckodriver.exe");
+			driver = new FirefoxDriver();
 			driver.get("http://localhost:8080/webapp/");
 			WebElement inputName = driver.findElement(By.name("email"));
 			WebElement inputPass = driver.findElement(By.name("password"));
@@ -39,7 +39,7 @@ public class TestUpdate {
 			inputName.sendKeys("anh@gmail.com");
 			inputPass.sendKeys("123");
 			btnLogIn.click();
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -55,12 +55,13 @@ public class TestUpdate {
 		cell.click();
 		Thread.sleep(300);
 		WebElement input = cell.findElement(By.name("currentInput"));
+		Thread.sleep(300);
 		String newValue = "new Value";
 		input.sendKeys(newValue);
 		Thread.sleep(300);
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		if(cell.getText().equalsIgnoreCase(newValue))
 		assertTrue(true);
 		else 
@@ -76,8 +77,8 @@ public class TestUpdate {
 //		
 //	}
 //	
-	@AfterClass
-	public static void close() {
-		driver.close();
-	}
+//	@AfterClass
+//	public static void close() {
+//		driver.close();
+//	}
 }
