@@ -74,9 +74,6 @@ public class Test_Crud_Firefox_Sur_Bao {
 
 	@Test
 	public synchronized void checkDeleteRowJunit() throws InterruptedException {
-		user = "anh@gmail.com";
-		pass = "123";
-		checkInsert();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("return gaugau.deleteRow()");
 		Thread.sleep(500);
@@ -114,6 +111,9 @@ public class Test_Crud_Firefox_Sur_Bao {
 		} else {
 			assertFalse(true);
 		}
+		user = "anh@gmail.com";
+		pass = "123";
+		checkInsert();
 	}
 
 	@After
