@@ -4,6 +4,7 @@ import java.io.Serializable;
 import model.Account;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 public class AccountDAO {
 
 	public AccountDAO() {
+		this.init();
 	}
 
 	/**
@@ -113,7 +115,7 @@ public class AccountDAO {
 		return jdbc.update(sql, email);
 	}
 
-	///////////////////////////////
+
 	/**
 	 * Truy váº¥n thá»±c thá»ƒ theo tÃªn
 	 *
@@ -134,16 +136,11 @@ public class AccountDAO {
 	};
 
 	public boolean checkLogin(String email, String passwrod) {
-		List<Account> list = new ArrayList<>();
-
-		list.add(new Account("anh@gmail.com", "123"));
-		list.add(new Account("bao@gmail.com", "123"));
-		list.add(new Account("khoi@gmail.com", "123"));
-		list.add(new Account("vien@gmail.com", "123"));
-
-		for (int i = 0; i < list.size(); i++) {
-			if (email.equals(list.get(i).getEmail())) {
-				if (passwrod.equals(list.get(i).getPassword())) {
+	
+		
+		for (int i = 0; i < listAccount.size(); i++) {
+			if (email.equals(listAccount.get(i).getEmail())) {
+				if (passwrod.equals(listAccount.get(i).getPassword())) {
 					return true;
 				} else {
 					return false;
@@ -155,21 +152,22 @@ public class AccountDAO {
 	}
 
 	// SUR BAO HAS BEEN HERE
-	List<Account> listAccount = new ArrayList<>();
-
-	public ArrayList<Account> getAllAccount() {
-		if (listAccount.size() < 1) {
-			listAccount.add(new Account("anh@gmail.com", "123"));
-			listAccount.add(new Account("bao@gmail.com", "123"));
-			listAccount.add(new Account("khoi@gmail.com", "123"));
-			listAccount.add(new Account("vien@gmail.com", "123"));
-		}
-		return (ArrayList<Account>) listAccount;
+	private List<Account> listAccount = new ArrayList<>();
+	
+	public void init(){
+		listAccount.add(new Account("anh@gmail.com", "123"));
+		listAccount.add(new Account("bao@gmail.com", "123"));
+		listAccount.add(new Account("khoi@gmail.com", "123"));
+		listAccount.add(new Account("vien@gmail.com", "123"));
+	}
+	
+	public List<Account> getAllAccount() {
+		return this.listAccount;
 	}
 
 	public Integer findIndex(String email) {
 		for (int i = 0; i < listAccount.size(); i++) {
-			if (listAccount.get(i).getEmail() == email) {
+			if (listAccount.get(i).getEmail() == email.trim()) {
 				return i;
 			}
 		}
@@ -178,6 +176,7 @@ public class AccountDAO {
 
 	public Boolean deleteAccount(String email) {
 		int i = findIndex(email);
+	
 		if (i != -1) {
 			listAccount.remove(i);
 			return true;
@@ -186,16 +185,23 @@ public class AccountDAO {
 		}
 	}
 
-	public Boolean updateAccount(String email, String username, String fullname, String address, String phonenumber) {
+	public Boolean updateAccount(String email,String password, String username, String fullname, String address, String phonenumber) {
 		int i = findIndex(email);
 		if (i != -1) {
 			listAccount.get(i).setFullname(fullname);
 			listAccount.get(i).setAddress(address);
+			listAccount.get(i).setPassword(password);
 			listAccount.get(i).setPhonenumber(phonenumber);
-			listAccount.set(i, listAccount.get(i));
+			listAccount.get(i).setUsername(username);
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public Boolean insertAccount(String email,String password, String username, String fullname, String address, String phonenumber) {
+		if(email == null || password == null || username == null || fullname == null || address == null || phonenumber == null ) return false;	
+		listAccount.add(new Account(email,password,username,fullname,address,phonenumber,new Date().toString()));
+		return true;
 	}
 }

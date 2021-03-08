@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,16 +33,17 @@ public class AccountDAOTest {
 	
 	@Test
 	public void checkLogin() {
-		System.out.println("email: " + email + ", " + "password: " + password + ", " + "expected: " + expected);
-		assertEquals(expected,dao.checkLogin(email, password));
+		Assert.assertEquals("email: " + email + ", " + "password: " + password, expected, dao.checkLogin(email, password));
 	}
 		  
 	  @Parameterized.Parameters
 	  public static Collection input() {
 		  return Arrays.asList(new Object [][] {
 		  {"anh@gmail.com","123",true},
+		  {"anh@gmail.com","123",false},
 		  {"khoi@gmail.com","123",true},
-		  {"khoi","123",false}
+		  {"khoi","123",false},
+		  {"khoi","123",true},
 		  });
 	  }
  	 

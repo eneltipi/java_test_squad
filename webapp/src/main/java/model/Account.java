@@ -7,7 +7,20 @@ public class Account{
     String fullname;
     String address;
     String phonenumber;// vien
-    public String getEmail() {
+    
+
+    public Account(String email, String password,String username, String fullname, String address, String phonenumber, String dateCreated) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.fullname = fullname;
+		this.address = address;
+		this.phonenumber = phonenumber;
+		this.dateCreated = dateCreated;
+	}
+
+	public String getEmail() {
 		return email;
 	}
 

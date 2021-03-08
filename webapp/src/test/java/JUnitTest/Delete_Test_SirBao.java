@@ -17,14 +17,11 @@ import model.Account;
 
 @RunWith(Parameterized.class)
 public class Delete_Test_SirBao {
-	private String email;
-	private String password;
-	private boolean expected;
+	private String email; boolean expected;
 	private AccountDAO dao;
 
-	public Delete_Test_SirBao(String email, String password, boolean expected) {
+	public Delete_Test_SirBao(String email, boolean expected) {
 		this.email = email;
-		this.password = password;
 		this.expected = expected;
 	}
 
@@ -34,17 +31,31 @@ public class Delete_Test_SirBao {
 	}
 
 	@Test
-	public void checkDeleteSuccess() {
-		ArrayList<Account> all1 = (ArrayList<Account>) dao.getAllAccount();
-		boolean result = dao.deleteAccount("vien@gmail.com");
-		ArrayList<Account> all2 = (ArrayList<Account>) dao.getAllAccount();
-		Assert.assertFalse(result == true && all1.size() == all2.size() + 1);
-		System.out.println(all2.size() + " " + result + ": " + all1.size());
+	public void checkDelete() {
+
+		StringBuilder StrRs = new StringBuilder();
+		
+		StrRs.append(String.format("delete account %s |",email));
+		
+		boolean result = dao.deleteAccount(email);
+	
+		if(result) {
+			StrRs.append(" this email: "+email+" deleted");
+			Assert.assertEquals(StrRs.toString(), expected, true);
+		}else {
+			StrRs.append(" this email: "+email+" can't delete");
+			Assert.assertEquals(StrRs.toString(), expected, false);
+		}
 	}
 
 	@Parameterized.Parameters
 	public static Collection input() {
-		return Arrays.asList(new Object[][] { { "hello", "123", true }, });
+		  return Arrays.asList(new Object [][] {
+			  {"anh@gmail.com",true},
+			  {"khoi@gmail.com",true},
+			  {"khoi",true},
+			  {"khoi",false}
+			  });
 	}
 
 }
